@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import hero from 'src/app/configs/hero';
+import { HeroService } from 'src/app/services/hero.service';
 
 @Component({
   selector: 'app-add-hero',
@@ -26,7 +27,12 @@ import hero from 'src/app/configs/hero';
 export class AddHeroComponent implements OnInit {
   formValues: FormGroup;
   private submitted = false;
-  constructor(private fb: FormBuilder, private router:Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router:Router,
+    private route:ActivatedRoute,
+    private heroServe:HeroService,
+    ) {
     this.formValues = this.fb.group({
       name: ['', [
         Validators.required,
@@ -101,11 +107,16 @@ export class AddHeroComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     console.log('this.formvalues.value', this.formValues.value)
-    this.cancel()
+    if(this.formValues.valid) {
+      this.heroServe.addHeroes(this.formValues.value).subscribe(res => {
+        console.log(res)
+      })
+    }
+    // this.cancel()
   }
 
   cancel() {
-    this.router.navigate(['../../heroes']);
+    this.router.navigate(['../heroes'], {relativeTo: this.route});
   }
   canDeactivate() {
     if (this.formValues.dirty && !this.submitted) {

@@ -23,7 +23,7 @@ export interface Base<T> {
   message: string;
   data?: T;
 }
-interface LoginType {
+export interface LoginType {
   user: Hero;
   token: string;
 }
