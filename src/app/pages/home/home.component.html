@@ -6,7 +6,7 @@
           <h2 class="title text-center" routerLink="/home">Hero Management Office</h2>
         </div>
         <div class="col-4">
-          <a class="login">登录</a>
+          <a class="login" routerLink="/login">登录</a>
         </div>
       </div>
     </header>
@@ -14,12 +14,12 @@
   <div class="container">
     <nav aria-label="breadcrumb">
       <ul class="breadcrumb">
-        <li class="breadcrumb-item">首页</li>
-        <li class="breadcrumb-item">英雄列表</li>
+        <li class="breadcrumb-item" *ngFor="let item of breadcurmb">{{item}}</li>
+        <!-- <li class="breadcrumb-item">英雄列表</li> -->
       </ul>
     </nav>
     <div class="content">
-      <app-heroes></app-heroes>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

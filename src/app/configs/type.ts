@@ -18,3 +18,17 @@ export interface Hero {
   email?: string;
   brief?: string;
 }
+export interface Base<T> {
+  code: number;
+  message: string;
+  data?: T;
+}
+interface LoginType {
+  user: Hero;
+  token: string;
+}
+
+export interface LoginArg {
+  name: string;
+  password: string;
+}
