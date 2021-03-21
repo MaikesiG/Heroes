@@ -20,7 +20,7 @@ export class HeroService {
     const params = new HttpParams({fromString: stringify(args)})
     return this.http.get(this.prefix+'list', { params })
     .pipe(map((res:Base<Hero[]>)=> res.data),
-    catchError(error => this.handleError(error))
+    // catchError(error => this.handleError(error))
     )
   }
   addHeroes(args:HeroArg): Observable<any> {
@@ -30,17 +30,17 @@ export class HeroService {
     // .set('sort',args.sort)
     return this.http.post(this.prefix+'add', args)
     .pipe(map((res:Base<any>)=> res.data),
-    catchError(error => this.handleError(error))
+    // catchError(error => this.handleError(error))
     )
   }
-  private handleError(error:HttpErrorResponse): Observable<never> {
-    console.log('error',error)
-    if(typeof error.error?.code === 'number') {
-      //后台拒绝请求
-      alert(error.error.message);
-    } else {
-      alert('请求失败')
-    }
-    return throwError(error);
-  }
+  // private handleError(error:HttpErrorResponse): Observable<never> {
+  //   console.log('error',error)
+  //   if(typeof error.error?.code === 'number') {
+  //     //后台拒绝请求
+  //     alert(error.error.message);
+  //   } else {
+  //     alert('请求失败')
+  //   }
+  //   return throwError(error);
+  // }
 }

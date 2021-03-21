@@ -20,7 +20,7 @@ export class AccountService {
     // const params = new HttpParams({fromString: stringify(args)})
     return this.http.post(this.prefix+'login',args)
     .pipe(map((res:Base<LoginType>)=> res.data),
-    catchError(error => this.handleError(error))
+    // catchError(error => this.handleError(error))
     )
   }
 
@@ -40,11 +40,13 @@ export class AccountService {
     // .set('jobs',args.job)
     // .set('sort',args.sort)
     // const params = new HttpParams({fromString: stringify(args)})
-    return this.http.get(this.prefix+'account', {
-      headers:new HttpHeaders({[AuthKey]:auth,})
-    })
+    return this.http.get(this.prefix+'account'
+    // , {
+    //   headers:new HttpHeaders({[AuthKey]:auth,})
+    // }
+    )
     .pipe(map((res:Base<LoginType>)=> res.data),
-    catchError(error => this.handleError(error))
+    // catchError(error => this.handleError(error))
     )
   }
 }
