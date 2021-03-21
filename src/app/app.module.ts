@@ -8,7 +8,7 @@ import { PagesModule } from './pages/pages.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonInterceptorService } from './services/interceptors/common-interceptor.service';
-
+import interceptors from './services/interceptors/index';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,9 +20,7 @@ import { CommonInterceptorService } from './services/interceptors/common-interce
     HttpClientModule,
     AppRoutingModule,
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CommonInterceptorService, multi: true },
-  ],
+  providers: interceptors,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
