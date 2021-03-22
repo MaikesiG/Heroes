@@ -26,13 +26,22 @@ const routes: Routes = [
         }
       },
       {
-        path:'update-hero',
+        path:'update-hero/:id',
         loadChildren:()=> import('./update-hero/update-hero.module')
         .then(m=>m.UpdateHeroModule),
         data:{
           title:'Update Hero',
           auth:['admin'],
           breadcrumb:['Home','Update Hero']
+        }
+      },
+      {
+        path:'user-center',
+        loadChildren:()=> import('./user-center/user-center.module')
+        .then(m=>m.UserCenterModule),
+        data:{
+          title:'User Center',
+          breadcrumb:['Home','User Center']
         }
       },
       {path:'',redirectTo:'heroes',pathMatch:'full'},

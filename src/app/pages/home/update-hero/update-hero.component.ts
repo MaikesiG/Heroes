@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update-hero',
@@ -9,7 +10,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class UpdateHeroComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route:ActivatedRoute) {
+    console.log(this.route.snapshot.paramMap.get('id'))
+  }
 
   ngOnInit(): void {
   }

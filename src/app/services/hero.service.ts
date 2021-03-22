@@ -23,12 +23,26 @@ export class HeroService {
     // catchError(error => this.handleError(error))
     )
   }
-  addHeroes(args:UpdateHeroArg): Observable<Base<void>> {
+  hero(id:string): Observable<Hero[]> {
+    return this.http.get(this.prefix+'detail/' + id)
+    .pipe(map((res:Base<Hero[]>)=> res.data),
+    // catchError(error => this.handleError(error))
+    )
+  }
+
+  addHero(args:UpdateHeroArg): Observable<Base<void>> {
     // const params = new HttpParams()
     // .set('name',args.name)
     // .set('jobs',args.job)
     // .set('sort',args.sort)
     return this.http.post(this.prefix+'add', args)
+    .pipe(map((res:Base<void>)=> res),
+    // catchError(error => this.handleError(error))
+    )
+  }
+
+  updateHero(id:string,args:UpdateHeroArg): Observable<Base<void>> {
+    return this.http.patch(this.prefix+'modify/' + id, args)
     .pipe(map((res:Base<void>)=> res),
     // catchError(error => this.handleError(error))
     )

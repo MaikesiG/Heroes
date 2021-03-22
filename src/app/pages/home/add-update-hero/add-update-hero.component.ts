@@ -1,59 +1,65 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import hero from 'src/app/configs/hero';
 import { HeroService } from 'src/app/services/hero.service';
+import { WindowService } from 'src/app/services/window.service';
 
 @Component({
-  selector: 'app-add-hero',
-  templateUrl: './add-hero.component.html',
+  selector: 'app-add-update-hero',
+  templateUrl: './add-update-hero.component.html',
   styles: [
     `
-    .add-hero form{
+    .add-update-hero form{
       max-width: 900px;
       margin: 20px auto;
     }
-    .add-hero form .btns {
+    .add-update-hero form .btns {
       text-align: center;
       margin-top: 16px;
     }
-    .add-hero form .btn {
+    .add-update-hero form .btn {
       margin-right: 10px;
     }
     `
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddHeroComponent implements OnInit {
-  formValues: FormGroup;
+export class AddUpdateHeroComponent implements OnInit {
+  private id:string = '';
+  formValues: FormGroup = this.fb.group({
+    name: ['', [
+      Validators.required,
+      Validators.maxLength(20)
+    ]],
+    gender: ['0', Validators.min(0)],
+    age: ['', Validators.min(0)],
+    phone: ['', [
+      Validators.required,
+      Validators.pattern(/^1\d{10}$/)
+    ]],
+    email: ['', Validators.email],
+    job: ['', Validators.required],
+    role: ['user', Validators.required],
+    brief: ['', [
+      Validators.minLength(2),
+      Validators.maxLength(100)
+    ]]
+  });;
   private submitted = false;
   constructor(
     private fb: FormBuilder,
     private router:Router,
     private route:ActivatedRoute,
     private heroServe:HeroService,
+    private windowServe:WindowService,
+    private cdr: ChangeDetectorRef,
     ) {
-    this.formValues = this.fb.group({
-      name: ['', [
-        Validators.required,
-        Validators.maxLength(20)
-      ]],
-      gender: ['0', Validators.min(0)],
-      age: ['', Validators.min(0)],
-      phone: ['', [
-        Validators.required,
-        Validators.pattern(/^1\d{10}$/)
-      ]],
-      email: ['', Validators.email],
-      job: ['', Validators.required],
-      role: ['user', Validators.required],
-      brief: ['', [
-        Validators.minLength(2),
-        Validators.maxLength(100)
-      ]]
-    });
+    console.log(this.route.snapshot.paramMap.get('id'))
+      this.id = this.route.snapshot.paramMap.get('id')
+      if(this.id) {
+         this.getHeroInfo();
+      }
   }
-
   ngOnInit(): void {}
   get formControls() {
     const controls = {
@@ -103,14 +109,27 @@ export class AddHeroComponent implements OnInit {
       },
     };
   }
-
+  getHeroInfo() {
+    this.heroServe.hero(this.id).subscribe(hero => {
+      console.log('hero', hero)
+      this.formValues.patchValue(hero)
+      this.cdr.markForCheck()
+    })
+  }
   onSubmit() {
     this.submitted = true;
-    console.log('this.formvalues.value', this.formValues.value)
+    // console.log('this.formvalues.value', this.formValues.value)
     if(this.formValues.valid) {
-      this.heroServe.addHeroes(this.formValues.value).subscribe(res => {
-        console.log(res)
-      })
+      if(this.id) {
+        this.heroServe.updateHero(this.id,this.formValues.value).subscribe(() => {
+          this.windowServe.alert('update successfully!')
+          this.cancel()
+        })
+      } else{
+        this.heroServe.addHero(this.formValues.value).subscribe(res => {
+          this.windowServe.alert('add successfully!')
+        })
+      }
     }
     // this.cancel()
   }
