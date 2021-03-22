@@ -12,7 +12,7 @@ export class CommonInterceptorTwoService implements HttpInterceptor {
 
   constructor() { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('CommonInterceptorService2')
+    // console.log('CommonInterceptorService2')
     return next.handle(req)
   }
 

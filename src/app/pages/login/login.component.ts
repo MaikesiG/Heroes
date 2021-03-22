@@ -5,6 +5,7 @@ import { AuthKey } from 'src/app/configs/constant';
 import { LoginArg } from 'src/app/configs/type';
 import { AccountService } from 'src/app/services/account.service';
 import { UserService } from 'src/app/services/user.service';
+import { WindowService } from 'src/app/services/window.service';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private accountServe:AccountService,
     private userServe:UserService,
+    private windowServe:WindowService,
     ) { }
 
   ngOnInit(): void {
@@ -35,11 +37,15 @@ export class LoginComponent implements OnInit {
       this.accountServe.login(form.value).subscribe(({user,token}) =>{
         // console.log('res',res)
 
-        localStorage.setItem(AuthKey,token);
+        this.windowServe.setStorage(AuthKey,token);
         this.userServe.setUser(user);
         // console.log('setUser',user)
-        alert('login successfully');
-        this.router.navigateByUrl('/home/heroes');
+        this.windowServe.alert('login successfully');
+        const to = this.accountServe.redirectTo || '/home/heroes'
+        console.log('to', to)
+        this.router.navigateByUrl(to).then(() =>{
+          this.accountServe.redirectTo = '';
+        });
       })
 
     }

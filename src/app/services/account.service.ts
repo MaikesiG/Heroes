@@ -5,13 +5,18 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthKey } from '../configs/constant';
 import { Base, LoginArg, LoginType } from '../configs/type';
+import { WindowService } from './window.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private prefix = environment.baseUrl + '/hero/';
-  constructor(private http:HttpClient) { }
+  redirectTo:string ='';
+  constructor(
+    private http:HttpClient,
+    private windowServe:WindowService,
+    ) { }
   login(args:LoginArg): Observable<LoginType> {
     // const params = new HttpParams()
     // .set('name',args.name)
@@ -28,9 +33,9 @@ export class AccountService {
     console.log('error',error)
     if(typeof error.error?.code === 'number') {
       //后台拒绝请求
-      alert(error.error.message);
+      this.windowServe.alert(error.error.message);
     } else {
-      alert('请求失败')
+      this.windowServe.alert('请求失败')
     }
     return throwError(error);
   }

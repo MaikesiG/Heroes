@@ -5,6 +5,7 @@ import { filter, switchMap } from 'rxjs/operators';
 import { AuthKey } from './configs/constant';
 import { AccountService } from './services/account.service';
 import { UserService } from './services/user.service';
+import { WindowService } from './services/window.service';
 
 @Component({
   selector: 'app-root',
@@ -18,19 +19,20 @@ export class AppComponent {
     private route:ActivatedRoute,
     private userServe:UserService,
     private accountServe:AccountService,
+    private windowServe:WindowService,
     ) {
     this.router.events.pipe(
       filter(event=> event instanceof NavigationStart),//这里只需要这个时机
       switchMap(()=>this.userServe.user$),//所以这里为空
       switchMap( user => {
-        const authKey = localStorage.getItem(AuthKey);
+        const authKey = this.windowServe.getStorage(AuthKey);
         if(authKey && !user) {
           return this.accountServe.account(authKey)
         }
         return EMPTY;
       })
     ).subscribe(({user,token})=>{
-      localStorage.setItem(AuthKey,token);
+      this.windowServe.setStorage(AuthKey,token);
       this.userServe.setUser(user);
     })
     // .subscribe(currentUser=> {

@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
     private route:ActivatedRoute,
     private router:Router,
     private userServe:UserService,
+    @Inject(DOCUMENT) private doc:Document,
     private cdr: ChangeDetectorRef,
     ) {
     this.router.events.pipe(

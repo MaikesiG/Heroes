@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angula
 import { catchError, map } from 'rxjs/operators'
 import { environment } from 'src/environments/environment';
 import { Observable, throwError } from 'rxjs';
-import { Base, Hero, HeroArg } from '../configs/type';
+import { Base, Hero, HeroArg, UpdateHeroArg } from '../configs/type';
 import { stringify } from 'qs';
 @Injectable({
   providedIn: 'root'
@@ -23,13 +23,13 @@ export class HeroService {
     // catchError(error => this.handleError(error))
     )
   }
-  addHeroes(args:HeroArg): Observable<any> {
+  addHeroes(args:UpdateHeroArg): Observable<Base<void>> {
     // const params = new HttpParams()
     // .set('name',args.name)
     // .set('jobs',args.job)
     // .set('sort',args.sort)
     return this.http.post(this.prefix+'add', args)
-    .pipe(map((res:Base<any>)=> res.data),
+    .pipe(map((res:Base<void>)=> res),
     // catchError(error => this.handleError(error))
     )
   }

@@ -32,3 +32,4 @@ export interface LoginArg {
   name: string;
   password: string;
 }
+export type UpdateHeroArg = Omit<Hero, 'id'| 'createTime'| 'genderText'| 'jobText'>

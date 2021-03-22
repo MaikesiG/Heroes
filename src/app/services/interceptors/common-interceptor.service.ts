@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthKey } from 'src/app/configs/constant';
+import { WindowService } from '../window.service';
 
 interface customHttpConfig {
   headers?:HttpHeaders;
@@ -10,10 +11,12 @@ interface customHttpConfig {
 @Injectable()
 export class CommonInterceptorService implements HttpInterceptor {
 
-  constructor() { }
+  constructor(
+    private windowServe:WindowService
+    ) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('CommonInterceptorService')
-    const auth = localStorage.getItem(AuthKey);
+    // console.log('CommonInterceptorService')
+    const auth = this.windowServe.getStorage(AuthKey);
     let httpConfig: customHttpConfig = {};
     if (auth) {
       httpConfig = { headers: req.headers.set(AuthKey,auth)}
@@ -31,9 +34,9 @@ export class CommonInterceptorService implements HttpInterceptor {
     console.log('error',error)
     if(typeof error.error?.code === 'number') {
       //后台拒绝请求
-      alert(error.error.message);
+      this.windowServe.alert(error.error.message);
     } else {
-      alert('请求失败')
+      this.windowServe.alert('请求失败')
     }
     return throwError(error);
   }

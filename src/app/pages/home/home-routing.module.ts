@@ -19,15 +19,21 @@ const routes: Routes = [
         path:'add-hero',
         loadChildren:()=> import('./add-hero/add-hero.module')
         .then(m=>m.AddHeroModule),
-        data:{title:'Add Hero',
-        breadcrumb:['Home','Add Hero']}
+        data:{
+          title:'Add Hero',
+          auth:['admin'],
+          breadcrumb:['Home','Add Hero']
+        }
       },
       {
         path:'update-hero',
         loadChildren:()=> import('./update-hero/update-hero.module')
         .then(m=>m.UpdateHeroModule),
-        data:{title:'Update Hero',
-        breadcrumb:['Home','Update Hero']}
+        data:{
+          title:'Update Hero',
+          auth:['admin'],
+          breadcrumb:['Home','Update Hero']
+        }
       },
       {path:'',redirectTo:'heroes',pathMatch:'full'},
     ]
