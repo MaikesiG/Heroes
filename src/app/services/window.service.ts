@@ -1,5 +1,6 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { windowWhen } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,12 @@ export class WindowService {
     if(this.isBrowser) {
       alert(message)
     }
+  }
+  confirm(message:string):boolean {
+    if(this.isBrowser) {
+      return window.confirm(message)
+    }
+    return false;
   }
   clearStorage(): void {
     if (this.isBrowser) {

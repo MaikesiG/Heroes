@@ -40,7 +40,9 @@ export class HeroService {
     // catchError(error => this.handleError(error))
     )
   }
-
+  delHero(id:string): Observable<Base<void>> {
+    return this.http.delete<Base<void>>(this.prefix+'remove/' + id);
+  }
   updateHero(id:string,args:UpdateHeroArg): Observable<Base<void>> {
     return this.http.patch(this.prefix+'modify/' + id, args)
     .pipe(map((res:Base<void>)=> res),

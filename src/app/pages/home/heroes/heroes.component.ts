@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Hero, HeroArg } from 'src/app/configs/type';
 import { HeroService } from 'src/app/services/hero.service';
+import { WindowService } from 'src/app/services/window.service';
 import Heroes from '../../../configs/hero'
 @Component({
   selector: 'app-heroes',
@@ -17,7 +18,10 @@ export class HeroesComponent implements OnInit {
   showSpin = false;
   heroes: Hero[] = Heroes;
   // heroServe:HeroService;
-  constructor(private heroServe:HeroService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private heroServe:HeroService,
+    private cdr: ChangeDetectorRef,
+    private windowServe:WindowService,) {
     // this.heroServe = new HeroService()
     // console.log('heroServe', this.heroServe.heroes())
    }
@@ -48,7 +52,16 @@ export class HeroesComponent implements OnInit {
       this.cdr.markForCheck();
     });
   }
+  delHero(id:string) {
+    const confirm = this.windowServe.confirm('sure to delete?');
+    if(confirm) {
+      this.heroServe.delHero(id).subscribe(() => {
+        this.windowServe.alert('delete succefully');
+        this.getList();
+      });
+    }
 
+  }
   reset() {
     this.searchParams = {
       name: '',
