@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { AuthKey } from '../configs/constant';
 import { Hero } from '../configs/type';
 import { AccountService } from './account.service';
@@ -29,7 +29,8 @@ export class ContextService {
             } else {
               return this.accountServe.account(authKey);
             }
-          })
+          }),
+          first(),
         ).subscribe(res => {
           let user: Hero;
           if('token' in res) {

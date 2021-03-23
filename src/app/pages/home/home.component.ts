@@ -3,8 +3,11 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
+import { AuthKey } from 'src/app/configs/constant';
 import { Hero } from 'src/app/configs/type';
+import { AccountService } from 'src/app/services/account.service';
 import { UserService } from 'src/app/services/user.service';
+import { WindowService } from 'src/app/services/window.service';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +21,8 @@ export class HomeComponent implements OnInit {
     private route:ActivatedRoute,
     private router:Router,
     private userServe:UserService,
+    private accountServe:AccountService,
+    private windowServe:WindowService,
     @Inject(DOCUMENT) private doc:Document,
     private cdr: ChangeDetectorRef,
     ) {
@@ -47,6 +52,15 @@ export class HomeComponent implements OnInit {
     this.userServe.user$.subscribe(user =>{
       this.currentUser = user
       this.cdr.markForCheck()
+    })
+  }
+  exitLog() {
+    this.accountServe.logout().subscribe(() => {
+      this.windowServe.removeStorage(AuthKey);
+      this.userServe.clearUser();
+      this.router.navigateByUrl('/login').then(() => {
+        this.windowServe.alert('logout')
+      })
     })
   }
 

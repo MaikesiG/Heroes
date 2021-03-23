@@ -44,10 +44,7 @@ export class HeroService {
     return this.http.delete<Base<void>>(this.prefix+'remove/' + id);
   }
   updateHero(id:string,args:UpdateHeroArg): Observable<Base<void>> {
-    return this.http.patch(this.prefix+'modify/' + id, args)
-    .pipe(map((res:Base<void>)=> res),
-    // catchError(error => this.handleError(error))
-    )
+    return this.http.patch<Base<void>>(this.prefix+'modify/' + id, args)
   }
   // private handleError(error:HttpErrorResponse): Observable<never> {
   //   console.log('error',error)

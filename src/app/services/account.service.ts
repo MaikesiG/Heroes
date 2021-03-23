@@ -54,4 +54,8 @@ export class AccountService {
     // catchError(error => this.handleError(error))
     )
   }
+
+  logout():Observable<Base<void>> {
+    return this.http.get<Base<void>>(this.prefix + 'logout');
+  }
 }

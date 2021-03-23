@@ -17,11 +17,11 @@ export class AppComponent {
   title = 'Heroes';
   constructor(
     private router:Router,
-    private route:ActivatedRoute,
-    private userServe:UserService,
-    private accountServe:AccountService,
+    // private route:ActivatedRoute,
+    // private userServe:UserService,
+    // private accountServe:AccountService,
     private contextServe:ContextService,
-    private windowServe:WindowService,
+    // private windowServe:WindowService,
     ) {
     this.router.events.pipe(
       filter(event=> event instanceof NavigationStart),//这里只需要这个时机

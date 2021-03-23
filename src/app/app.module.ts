@@ -20,7 +20,7 @@ import interceptors from './services/interceptors/index';
     HttpClientModule,
     AppRoutingModule,
   ],
-  providers: interceptors,
+  providers: [...interceptors], //拦截器是数组
   bootstrap: [AppComponent]
 })
 export class AppModule { }
