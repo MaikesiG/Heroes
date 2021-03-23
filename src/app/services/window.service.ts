@@ -40,12 +40,6 @@ export class WindowService {
       alert(message)
     }
   }
-  confirm(message:string):boolean {
-    if(this.isBrowser) {
-      return window.confirm(message)
-    }
-    return false;
-  }
   clearStorage(): void {
     if (this.isBrowser) {
       localStorage.clear();
